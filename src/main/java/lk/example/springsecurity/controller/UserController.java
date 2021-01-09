@@ -3,6 +3,7 @@ package lk.example.springsecurity.controller;
 import lk.example.springsecurity.entity.UserEntity;
 import lk.example.springsecurity.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
@@ -28,6 +29,7 @@ public class UserController {
     }
 
     @GetMapping("/get-all")
+    @PreAuthorize("hasRole(ROLE_USER)")
     public String getAll(Principal principal){
         String name = principal.getName();
         System.out.println(name);

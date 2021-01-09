@@ -7,6 +7,9 @@ import org.springframework.context.annotation.Configuration;
 @Configuration
 public class JwtConfig {
 
+    @Value("${jwt.loginurl}")
+    private String url;
+
     @Value("${jwt.header}")
     private String header;
 
@@ -16,8 +19,16 @@ public class JwtConfig {
     @Value("${jwt.tokenExpirationAfterDays}")
     private int expiration; // default 8 hours
 
-    @Value(APIParameters.SECRET)
+    @Value("${jwt.secret}")
     private String secret;
+
+    public String getUrl() {
+        return url;
+    }
+
+    public void setUrl(String url) {
+        this.url = url;
+    }
 
     public String getHeader() {
         return header;

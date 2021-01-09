@@ -4,7 +4,6 @@ import lk.example.springsecurity.jwt.JwtAuthenticationFilter;
 import lk.example.springsecurity.jwt.JwtAuthorizationFilter;
 import lk.example.springsecurity.jwt.JwtConfig;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
@@ -36,7 +35,7 @@ public class ApplicationSecurityConfig extends WebSecurityConfigurerAdapter {
                 .addFilter(new JwtAuthenticationFilter(authenticationManager(),jwtConfig))
                 .addFilterAfter(new JwtAuthorizationFilter(jwtConfig), JwtAuthenticationFilter.class)
                 .authorizeRequests()
-                .antMatchers("/users/sign-up").permitAll()
+                .antMatchers(jwtConfig.getUrl()).permitAll()
                 .anyRequest()
                 .authenticated();
     }
