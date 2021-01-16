@@ -35,4 +35,11 @@ public class UserController {
         System.out.println(name);
         return "All thing gone be RIGHT!!!!";
     }
+
+    @GetMapping("/view")
+    public String view(Principal principal){
+        System.out.println("kajsdbna");
+        return "YOYO";
+    }
+
 }

@@ -15,16 +15,23 @@ public class UserEntity {
     private String password;
     @Column
     private String role;
-
+    @Enumerated(EnumType.STRING)
+    @Column
+    private AuthenticationProvider authenticationProvider;
     public UserEntity() {
 
     }
 
-    public UserEntity(long id, String userName, String password, String role) {
+    public UserEntity(long id,
+                      String userName,
+                      String password,
+                      String role,
+                      AuthenticationProvider authenticationProvider) {
         this.id = id;
         this.userName = userName;
         this.password = password;
         this.role = role;
+        this.authenticationProvider = authenticationProvider;
     }
 
     @Override
@@ -34,6 +41,7 @@ public class UserEntity {
                 ", userName='" + userName + '\'' +
                 ", password='" + password + '\'' +
                 ", role='" + role + '\'' +
+                ", authenticationProvider=" + authenticationProvider +
                 '}';
     }
 
@@ -67,5 +75,13 @@ public class UserEntity {
 
     public void setRole(String role) {
         this.role = role;
+    }
+
+    public AuthenticationProvider getAuthenticationProvider() {
+        return authenticationProvider;
+    }
+
+    public void setAuthenticationProvider(AuthenticationProvider authenticationProvider) {
+        this.authenticationProvider = authenticationProvider;
     }
 }

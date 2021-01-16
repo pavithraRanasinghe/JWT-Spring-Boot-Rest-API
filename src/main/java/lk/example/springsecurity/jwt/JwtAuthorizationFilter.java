@@ -37,7 +37,7 @@ public class JwtAuthorizationFilter extends OncePerRequestFilter {
 
         if(Strings.isNullOrEmpty(authorization) || !authorization.startsWith(jwtConfig.getPrefix())){
             filterChain.doFilter(request,response);
-            return;
+
         }
 
         String token = authorization.replace(jwtConfig.getPrefix(), "");

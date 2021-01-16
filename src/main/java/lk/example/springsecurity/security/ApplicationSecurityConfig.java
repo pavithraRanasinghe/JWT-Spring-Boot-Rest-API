@@ -3,6 +3,8 @@ package lk.example.springsecurity.security;
 import lk.example.springsecurity.jwt.JwtAuthenticationFilter;
 import lk.example.springsecurity.jwt.JwtAuthorizationFilter;
 import lk.example.springsecurity.jwt.JwtConfig;
+import lk.example.springsecurity.oauth.CustomOAuth2UserService;
+import lk.example.springsecurity.oauth.OAuth2LoginSuccessfulHandler;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -10,17 +12,22 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.oauth2.client.userinfo.OAuth2UserService;
 
 @Configuration
 @EnableWebSecurity
 public class ApplicationSecurityConfig extends WebSecurityConfigurerAdapter {
 
-
+    @Autowired
+    private CustomOAuth2UserService oAuth2UserService;
+    @Autowired
+    private OAuth2LoginSuccessfulHandler oAuth2LoginSuccessfulHandler;
     private final PasswordEncoder passwordEncoder;
     private final JwtConfig jwtConfig;
 
     @Autowired
-    public ApplicationSecurityConfig(PasswordEncoder passwordEncoder, JwtConfig jwtConfig) {
+    public ApplicationSecurityConfig(PasswordEncoder passwordEncoder,
+                                     JwtConfig jwtConfig) {
         this.passwordEncoder = passwordEncoder;
         this.jwtConfig = jwtConfig;
     }
@@ -36,7 +43,15 @@ public class ApplicationSecurityConfig extends WebSecurityConfigurerAdapter {
                 .addFilterAfter(new JwtAuthorizationFilter(jwtConfig), JwtAuthenticationFilter.class)
                 .authorizeRequests()
                 .antMatchers(jwtConfig.getUrl()).permitAll()
+                .antMatchers("/users/view").permitAll()
+                .antMatchers("/oauth2/**").permitAll()
                 .anyRequest()
-                .authenticated();
+                .authenticated()
+                .and()
+                .oauth2Login()
+                    .loginPage(jwtConfig.getUrl())
+                    .userInfoEndpoint().userService(oAuth2UserService)
+                    .and()
+                    .successHandler(oAuth2LoginSuccessfulHandler);
     }
 }
