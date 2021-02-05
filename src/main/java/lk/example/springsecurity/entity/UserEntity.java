@@ -20,6 +20,9 @@ public class UserEntity {
     @Enumerated(EnumType.STRING)
     @Column
     private AuthenticationProvider authenticationProvider;
+    @Column(name = "reset_password_token")
+    private String resetPasswordToken;
+
     public UserEntity() {
 
     }
@@ -29,25 +32,15 @@ public class UserEntity {
                       String email,
                       String password,
                       String role,
-                      AuthenticationProvider authenticationProvider) {
+                      AuthenticationProvider authenticationProvider,
+                      String resetPasswordToken) {
         this.id = id;
         this.userName = userName;
         this.email = email;
         this.password = password;
         this.role = role;
         this.authenticationProvider = authenticationProvider;
-    }
-
-    @Override
-    public String toString() {
-        return "UserEntity{" +
-                "id=" + id +
-                ", userName='" + userName + '\'' +
-                ", email='" + email + '\'' +
-                ", password='" + password + '\'' +
-                ", role='" + role + '\'' +
-                ", authenticationProvider=" + authenticationProvider +
-                '}';
+        this.resetPasswordToken = resetPasswordToken;
     }
 
     public long getId() {
@@ -96,5 +89,26 @@ public class UserEntity {
 
     public void setAuthenticationProvider(AuthenticationProvider authenticationProvider) {
         this.authenticationProvider = authenticationProvider;
+    }
+
+    public String getResetPasswordToken() {
+        return resetPasswordToken;
+    }
+
+    public void setResetPasswordToken(String resetPasswordToken) {
+        this.resetPasswordToken = resetPasswordToken;
+    }
+
+    @Override
+    public String toString() {
+        return "UserEntity{" +
+                "id=" + id +
+                ", userName='" + userName + '\'' +
+                ", email='" + email + '\'' +
+                ", password='" + password + '\'' +
+                ", role='" + role + '\'' +
+                ", authenticationProvider=" + authenticationProvider +
+                ", resetPasswordToken='" + resetPasswordToken + '\'' +
+                '}';
     }
 }

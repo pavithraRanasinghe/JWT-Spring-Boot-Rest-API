@@ -45,6 +45,7 @@ public class ApplicationSecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers(jwtConfig.getUrl()).permitAll()
                 .antMatchers("/users/view").permitAll()
                 .antMatchers("/oauth2/**").permitAll()
+                .antMatchers("/forget/**").permitAll()
                 .anyRequest()
                 .authenticated()
                 .and()

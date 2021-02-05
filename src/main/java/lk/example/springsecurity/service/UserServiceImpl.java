@@ -10,6 +10,8 @@ import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -55,6 +57,30 @@ public class UserServiceImpl implements UserDetailsService {
         userEntity.setUserName(userName);
         userEntity.setAuthenticationProvider(authenticationProvider);
         System.out.println("asd");
+        userRepository.save(userEntity);
+    }
+    
+    public void updateResetPassword(String token,String email){
+        UserEntity user = userRepository.findByEmail(email);
+
+        if (user != null){
+            user.setResetPasswordToken(token);
+            userRepository.save(user);
+        }else {
+            throw new UsernameNotFoundException(email);
+        }
+
+    }
+
+    public UserEntity get(String token){
+        return userRepository.findByResetPasswordToken(token);
+    }
+
+    public void resetPassword(UserEntity userEntity, String password){
+        BCryptPasswordEncoder bCryptPasswordEncoder = new BCryptPasswordEncoder();
+        String newPassword = bCryptPasswordEncoder.encode(password);
+
+        userEntity.setPassword(newPassword);
         userRepository.save(userEntity);
     }
 }
