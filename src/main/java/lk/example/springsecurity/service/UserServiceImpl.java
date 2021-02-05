@@ -1,5 +1,7 @@
 package lk.example.springsecurity.service;
 
+import com.sun.scenario.effect.impl.sw.sse.SSEBlend_SRC_OUTPeer;
+import lk.example.springsecurity.entity.AuthenticationProvider;
 import lk.example.springsecurity.entity.UserEntity;
 import lk.example.springsecurity.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,6 +25,9 @@ public class UserServiceImpl implements UserDetailsService {
         this.userRepository = userRepository;
     }
 
+    public UserServiceImpl() {
+    }
+
     @Override
     public UserDetails loadUserByUsername(String s) throws UsernameNotFoundException {
         UserEntity userEntity = userRepository.findByUserName(s);
@@ -33,5 +38,23 @@ public class UserServiceImpl implements UserDetailsService {
         grantedAuthorities.add(new SimpleGrantedAuthority("ROLE_" + userEntity.getRole()));
         User user = new User(userEntity.getUserName(), userEntity.getPassword(), grantedAuthorities);
         return user;
+    }
+
+    public void newUserFromSuccessHandler(String email, String userName, AuthenticationProvider authenticationProvider){
+        UserEntity userEntity = new UserEntity();
+        userEntity.setUserName(userName);
+        userEntity.setEmail(email);
+        userEntity.setAuthenticationProvider(authenticationProvider);
+        userEntity.setRole("ADMIN");
+        System.out.println("Working");
+        userRepository.save(userEntity);
+    }
+
+    public void updateUserFromSuccessHandler(UserEntity userEntity,String email,String userName, AuthenticationProvider authenticationProvider){
+        userEntity.setEmail(email);
+        userEntity.setUserName(userName);
+        userEntity.setAuthenticationProvider(authenticationProvider);
+        System.out.println("asd");
+        userRepository.save(userEntity);
     }
 }

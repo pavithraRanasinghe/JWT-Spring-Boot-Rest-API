@@ -1,5 +1,9 @@
 package lk.example.springsecurity.oauth;
 
+import lk.example.springsecurity.entity.AuthenticationProvider;
+import lk.example.springsecurity.entity.UserEntity;
+import lk.example.springsecurity.repository.UserRepository;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.oauth2.client.userinfo.DefaultOAuth2UserService;
 import org.springframework.security.oauth2.client.userinfo.OAuth2UserRequest;
 import org.springframework.security.oauth2.core.OAuth2AuthenticationException;

@@ -4,6 +4,7 @@ import com.google.common.base.Strings;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jws;
 import io.jsonwebtoken.Jwts;
+import lk.example.springsecurity.oauth.CustomOAuth2UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -21,6 +22,8 @@ import java.util.stream.Collectors;
 public class JwtAuthorizationFilter extends OncePerRequestFilter {
 
     private JwtConfig jwtConfig;
+    @Autowired
+    private CustomOAuth2UserService userService;
 
     @Autowired
     public JwtAuthorizationFilter(JwtConfig jwtConfig) {
